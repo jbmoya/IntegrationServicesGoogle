@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" VisualBasic.Settings="{x:Null}" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:uga="clr-namespace:UiPath.GSuite.Activities;assembly=UiPath.GSuite.Activities" xmlns:ugage="clr-namespace:UiPath.GSuite.Activities.Gmail.Enums;assembly=UiPath.GSuite.Activities" xmlns:ugagm="clr-namespace:UiPath.GSuite.Activities.Gmail.Models;assembly=UiPath.GSuite.Activities" xmlns:ugm="clr-namespace:UiPath.GSuite.Models;assembly=UiPath.GSuite" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:usau="clr-namespace:UiPath.Shared.Activities.Utils;assembly=UiPath.GSuite.Activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" VisualBasic.Settings="{x:Null}" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:isactr="http://schemas.uipath.com/workflow/integration-service-activities/isactr" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:ucas="clr-namespace:UiPath.Core.Activities.Storage;assembly=UiPath.System.Activities" xmlns:uga="clr-namespace:UiPath.GSuite.Activities;assembly=UiPath.GSuite.Activities" xmlns:ugage="clr-namespace:UiPath.GSuite.Activities.Gmail.Enums;assembly=UiPath.GSuite.Activities" xmlns:ugagm="clr-namespace:UiPath.GSuite.Activities.Gmail.Models;assembly=UiPath.GSuite.Activities" xmlns:uggm="clr-namespace:UiPath.GSuite.Gmail.Models;assembly=UiPath.GSuite" xmlns:ugm="clr-namespace:UiPath.GSuite.Models;assembly=UiPath.GSuite" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:usaa="clr-namespace:UiPath.Shared.Activities.AttachedProperties;assembly=UiPath.GSuite.Activities" xmlns:usau="clr-namespace:UiPath.Shared.Activities.Utils;assembly=UiPath.GSuite.Activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
       <x:String>System.Activities</x:String>
@@ -125,6 +125,16 @@
       <x:String>Microsoft.CodeAnalysis.VisualBasic</x:String>
       <x:String>Microsoft.CodeAnalysis.VisualBasic.Syntax</x:String>
       <x:String>Microsoft.VisualBasic.FileIO</x:String>
+      <x:String>UiPath.Platform.ResourceHandling</x:String>
+      <x:String>UiPath.GSuite.Gmail.Models</x:String>
+      <x:String>UiPath.GSuite.Enums</x:String>
+      <x:String>UiPath.Core.Activities.Storage</x:String>
+      <x:String>UiPath.Core.Activities.Orchestrator</x:String>
+      <x:String>UiPath.IntegrationService.Activities.Runtime.Models.FilterBuilder</x:String>
+      <x:String>UiPath.IntegrationService.Activities.Runtime.Models</x:String>
+      <x:String>UiPath.IntegrationService.Activities.Runtime.Helpers.TypeDetailsCustomization</x:String>
+      <x:String>UiPath.IntegrationService.Activities.Runtime.Activities</x:String>
+      <x:String>UiPath.Platform.Activities</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -237,66 +247,210 @@
       <AssemblyReference>Microsoft.CodeAnalysis</AssemblyReference>
       <AssemblyReference>Microsoft.CodeAnalysis.CSharp</AssemblyReference>
       <AssemblyReference>Microsoft.CodeAnalysis.Features</AssemblyReference>
+      <AssemblyReference>UiPath.Platform</AssemblyReference>
+      <AssemblyReference>UiPath.IntegrationService.Activities.Runtime</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="647,921.5" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Comment out ignored activities and process unread emails from Gmail" DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="644,992" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="scg:List(ugm:GmailMessage)" Name="EmailList" />
+      <Variable x:TypeArguments="uggm:GmailAttachmentLocalItem[]" Name="DownloadedAttachments" />
+    </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <uga:ForEachEmailConnections ConnectionAccountName="{x:Null}" CurrentIndex="{x:Null}" Filter="{x:Null}" FolderIdBackup="{x:Reference __ReferenceID0}" Length="{x:Null}" ManualEntryFolder="{x:Null}" AllLabels="W3siSWQiOiJDSEFUIiwiTmFtZSI6IkNIQVQiLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IlNFTlQiLCJOYW1lIjoiU0VOVCIsIlR5cGUiOiJzeXN0ZW0ifSx7IklkIjoiSU5CT1giLCJOYW1lIjoiSU5CT1giLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IklNUE9SVEFOVCIsIk5hbWUiOiJJTVBPUlRBTlQiLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IlRSQVNIIiwiTmFtZSI6IlRSQVNIIiwiVHlwZSI6InN5c3RlbSJ9LHsiSWQiOiJEUkFGVCIsIk5hbWUiOiJEUkFGVCIsIlR5cGUiOiJzeXN0ZW0ifSx7IklkIjoiU1BBTSIsIk5hbWUiOiJTUEFNIiwiVHlwZSI6InN5c3RlbSJ9LHsiSWQiOiJDQVRFR09SWV9GT1JVTVMiLCJOYW1lIjoiQ0FURUdPUllfRk9SVU1TIiwiVHlwZSI6InN5c3RlbSJ9LHsiSWQiOiJDQVRFR09SWV9VUERBVEVTIiwiTmFtZSI6IkNBVEVHT1JZX1VQREFURVMiLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IkNBVEVHT1JZX1BFUlNPTkFMIiwiTmFtZSI6IkNBVEVHT1JZX1BFUlNPTkFMIiwiVHlwZSI6InN5c3RlbSJ9LHsiSWQiOiJDQVRFR09SWV9QUk9NT1RJT05TIiwiTmFtZSI6IkNBVEVHT1JZX1BST01PVElPTlMiLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IkNBVEVHT1JZX1NPQ0lBTCIsIk5hbWUiOiJDQVRFR09SWV9TT0NJQUwiLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IlNUQVJSRUQiLCJOYW1lIjoiU1RBUlJFRCIsIlR5cGUiOiJzeXN0ZW0ifSx7IklkIjoiVU5SRUFEIiwiTmFtZSI6IlVOUkVBRCIsIlR5cGUiOiJzeXN0ZW0ifV0=" AuthScopesInvalid="False" BrowserFolder="Inbox" BrowserFolderLabelId="INBOX" ConnectionId="b7edcc86-f7cb-478f-86e9-9c705e3583a3" DisplayName="Process Unread Emails in Inbox" FolderInputSelectionMode="Browse" sap:VirtualizedContainerService.HintSize="470,898.5" sap2010:WorkflowViewState.IdRef="ForEachEmailConnections_1" ImportantOnly="False" IncludeSubfolders="False" MarkAsRead="False" MaxResults="100" StarredOnly="False" UnreadOnly="True" UseConnectionService="True" WithAttachmentsOnly="False">
-      <uga:ForEachEmailConnections.Body>
-        <ActivityAction x:TypeArguments="ugm:GmailMessage, x:Int32">
-          <ActivityAction.Argument1>
-            <DelegateInArgument x:TypeArguments="ugm:GmailMessage" Name="CurrentEmail" />
-          </ActivityAction.Argument1>
-          <ActivityAction.Argument2>
-            <DelegateInArgument x:TypeArguments="x:Int32" Name="CurrentEmailIndex" />
-          </ActivityAction.Argument2>
-          <Sequence sap2010:Annotation.AnnotationText="Retrieve the email subject and body and show it in a log message activity" DisplayName="Retrieve and log email details" sap:VirtualizedContainerService.HintSize="468,662" sap2010:WorkflowViewState.IdRef="Sequence_2">
-            <Sequence.Variables>
-              <Variable x:TypeArguments="x:String" Name="emailSubject" />
-              <Variable x:TypeArguments="x:String" Name="emailBody" />
-            </Sequence.Variables>
+    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="452,57" sap2010:WorkflowViewState.IdRef="CommentOut_1">
+      <ui:CommentOut.Body>
+        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="450,108" sap2010:WorkflowViewState.IdRef="Sequence_5">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <uga:ForEachEmailConnections ConnectionAccountName="{x:Null}" CurrentIndex="{x:Null}" Filter="{x:Null}" FolderIdBackup="{x:Reference __ReferenceID0}" Length="{x:Null}" ManualEntryFolder="{x:Null}" AllLabels="W3siSWQiOiJDSEFUIiwiTmFtZSI6IkNIQVQiLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IlNFTlQiLCJOYW1lIjoiU0VOVCIsIlR5cGUiOiJzeXN0ZW0ifSx7IklkIjoiSU5CT1giLCJOYW1lIjoiSU5CT1giLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IklNUE9SVEFOVCIsIk5hbWUiOiJJTVBPUlRBTlQiLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IlRSQVNIIiwiTmFtZSI6IlRSQVNIIiwiVHlwZSI6InN5c3RlbSJ9LHsiSWQiOiJEUkFGVCIsIk5hbWUiOiJEUkFGVCIsIlR5cGUiOiJzeXN0ZW0ifSx7IklkIjoiU1BBTSIsIk5hbWUiOiJTUEFNIiwiVHlwZSI6InN5c3RlbSJ9LHsiSWQiOiJDQVRFR09SWV9GT1JVTVMiLCJOYW1lIjoiQ0FURUdPUllfRk9SVU1TIiwiVHlwZSI6InN5c3RlbSJ9LHsiSWQiOiJDQVRFR09SWV9VUERBVEVTIiwiTmFtZSI6IkNBVEVHT1JZX1VQREFURVMiLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IkNBVEVHT1JZX1BFUlNPTkFMIiwiTmFtZSI6IkNBVEVHT1JZX1BFUlNPTkFMIiwiVHlwZSI6InN5c3RlbSJ9LHsiSWQiOiJDQVRFR09SWV9QUk9NT1RJT05TIiwiTmFtZSI6IkNBVEVHT1JZX1BST01PVElPTlMiLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IkNBVEVHT1JZX1NPQ0lBTCIsIk5hbWUiOiJDQVRFR09SWV9TT0NJQUwiLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IlNUQVJSRUQiLCJOYW1lIjoiU1RBUlJFRCIsIlR5cGUiOiJzeXN0ZW0ifSx7IklkIjoiVU5SRUFEIiwiTmFtZSI6IlVOUkVBRCIsIlR5cGUiOiJzeXN0ZW0ifV0=" AuthScopesInvalid="False" BrowserFolder="Inbox" BrowserFolderLabelId="INBOX" ConnectionId="f2b7babf-04ad-47af-843a-bde824376427" DisplayName="Process Unread Emails in Inbox" FolderInputSelectionMode="Browse" sap:VirtualizedContainerService.HintSize="416,48" sap2010:WorkflowViewState.IdRef="ForEachEmailConnections_1" ImportantOnly="False" IncludeSubfolders="False" MarkAsRead="False" MaxResults="100" StarredOnly="False" UnreadOnly="True" UseConnectionService="True" WithAttachmentsOnly="False">
+            <uga:ForEachEmailConnections.Body>
+              <ActivityAction x:TypeArguments="ugm:GmailMessage, x:Int32">
+                <ActivityAction.Argument1>
+                  <DelegateInArgument x:TypeArguments="ugm:GmailMessage" Name="CurrentEmail" />
+                </ActivityAction.Argument1>
+                <ActivityAction.Argument2>
+                  <DelegateInArgument x:TypeArguments="x:Int32" Name="CurrentEmailIndex" />
+                </ActivityAction.Argument2>
+                <Sequence sap2010:Annotation.AnnotationText="Retrieve the email subject and body and show it in a log message activity" DisplayName="Retrieve and log email details" sap:VirtualizedContainerService.HintSize="468,662" sap2010:WorkflowViewState.IdRef="Sequence_2">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="x:String" Name="emailSubject" />
+                    <Variable x:TypeArguments="x:String" Name="emailBody" />
+                  </Sequence.Variables>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Assign DisplayName="Retrieve the email subject" sap:VirtualizedContainerService.HintSize="434,115" sap2010:WorkflowViewState.IdRef="Assign_1">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">[emailSubject]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String">[CurrentEmail.Subject]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <Assign DisplayName="Retrieve the email body" sap:VirtualizedContainerService.HintSize="434,115" sap2010:WorkflowViewState.IdRef="Assign_2">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">[emailBody]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String">[CurrentEmail.Body]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <ui:LogMessage DisplayName="Log the email subject " sap:VirtualizedContainerService.HintSize="434,175" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Subject:&quot; +emailSubject]" />
+                  <ui:LogMessage DisplayName="Log the email Body" sap:VirtualizedContainerService.HintSize="434,166" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Error" Message="[&quot;Subject:&quot; +emailBody]" />
+                </Sequence>
+              </ActivityAction>
+            </uga:ForEachEmailConnections.Body>
+            <uga:ForEachEmailConnections.Folder>
+              <ugagm:FolderArgument ConnectionDescriptor="{x:Null}" ConnectionKey="{x:Null}" ManualEntryFolderName="{x:Null}" BrowserFolderId="INBOX" BrowserFolderName="Inbox" InputMode="Browse">
+                <ugagm:FolderArgument.Backup>
+                  <usau:BackupSlot x:TypeArguments="ugage:FolderInputMode" x:Name="__ReferenceID0" StoredValue="Browse">
+                    <usau:BackupSlot.BackupValues>
+                      <scg:Dictionary x:TypeArguments="ugage:FolderInputMode, scg:List(x:Object)" />
+                    </usau:BackupSlot.BackupValues>
+                  </usau:BackupSlot>
+                </ugagm:FolderArgument.Backup>
+              </ugagm:FolderArgument>
+            </uga:ForEachEmailConnections.Folder>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Assign DisplayName="Retrieve the email subject" sap:VirtualizedContainerService.HintSize="434,115" sap2010:WorkflowViewState.IdRef="Assign_1">
-              <Assign.To>
-                <OutArgument x:TypeArguments="x:String">[emailSubject]</OutArgument>
-              </Assign.To>
-              <Assign.Value>
-                <InArgument x:TypeArguments="x:String">[CurrentEmail.Subject]</InArgument>
-              </Assign.Value>
-            </Assign>
-            <Assign DisplayName="Retrieve the email body" sap:VirtualizedContainerService.HintSize="434,115" sap2010:WorkflowViewState.IdRef="Assign_2">
-              <Assign.To>
-                <OutArgument x:TypeArguments="x:String">[emailBody]</OutArgument>
-              </Assign.To>
-              <Assign.Value>
-                <InArgument x:TypeArguments="x:String">[CurrentEmail.Body]</InArgument>
-              </Assign.Value>
-            </Assign>
-            <ui:LogMessage DisplayName="Log the email subject " sap:VirtualizedContainerService.HintSize="434,175" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Subject:&quot; +emailSubject]" />
-            <ui:LogMessage DisplayName="Log the email Body" sap:VirtualizedContainerService.HintSize="434,166" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Subject:&quot; +emailBody]" />
-          </Sequence>
-        </ActivityAction>
-      </uga:ForEachEmailConnections.Body>
-      <uga:ForEachEmailConnections.Folder>
+          </uga:ForEachEmailConnections>
+        </Sequence>
+      </ui:CommentOut.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:CommentOut>
+    <Sequence sap2010:Annotation.AnnotationText="Delete all the content (all files) of a storage bucket called &quot;docMD&quot;" DisplayName="List and delete files in storage bucket" sap:VirtualizedContainerService.HintSize="452,866.5" sap2010:WorkflowViewState.IdRef="Sequence_9">
+      <Sequence.Variables>
+        <Variable x:TypeArguments="scg:IEnumerable(ucas:StorageFileInfo)" Name="StorageFilesList" />
+      </Sequence.Variables>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <ucas:ListStorageFiles Directory="\" DisplayName="List all storage files in the storage bucket called &quot;docMD&quot;" Filter="*.*" sap:VirtualizedContainerService.HintSize="418,167" sap2010:WorkflowViewState.IdRef="ListStorageFiles_1" Recursive="True" Result="[StorageFilesList]" StorageBucketName="docMD" TimeoutMS="60000" />
+      <ui:ForEach x:TypeArguments="ucas:StorageFileInfo" CurrentIndex="{x:Null}" DisplayName="For Each file in the list" sap:VirtualizedContainerService.HintSize="418,608.5" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[StorageFilesList]">
+        <ui:ForEach.Body>
+          <ActivityAction x:TypeArguments="ucas:StorageFileInfo">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="ucas:StorageFileInfo" Name="CurrentFile" />
+            </ActivityAction.Argument>
+            <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="416,486.5" sap2010:WorkflowViewState.IdRef="Sequence_10">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ucas:DeleteStorageFile DisplayName="Delete the file from the storage bucket" FolderPath="[CurrentFile.StorageContainerFolderPath]" sap:VirtualizedContainerService.HintSize="382,167" sap2010:WorkflowViewState.IdRef="DeleteStorageFile_1" Path="[CurrentFile.FileFullPath]" StorageBucketName="docMD" TimeoutMS="60000" />
+              <isactr:ConnectorActivity Configuration="H4sIAAAAAAAACu1X33PaRhD+VzT32EFUYBvbzGQyBtexWrsQg9OHTqZz6Ba4IOvU+1Gjkvzv3buTFEAOtTNp+9IXQLpv9779dm9v2ZArDilTQ5FpyjOQpL8hE6AyWdJZCn6R9H993yJxlhtdv9iQn+kDkD6Zi5SB/AkK0iKXXOUpLcqVEToBpSXVQgZXDhaMqV5aIKhE8lxzke0Dvb8g8YR4tgj0EgKeMVgHWgQmZ1QDupgWud0EzRCDzxMh9UiiKel3WuRGiJXJbTCj2QdI9A5ZRSrAO5oa+97Td+T65Pt9lDW2MZMrk6bFW0NTPufAnM/3n1w0fIGBbBBP2aC4hDk1qSZ9LQ3guhPtIrHRllrewe+GS2AeUiJuREJLRd4akJZRrG5BLwUbU4mbaRuc91nL74SJWUP82AnmHvbljistVZElwSPXy1JVFuAnPaxt94vaOibQ1JazLWlL0Ou6al5t6p+fmoJnz5K4ofCG+N9lHJOleETfdyZ1Xjco/9xZPFHCsRqmWP42NXOaKvQdq1+EXM1T8fjDOpeglFOxXKw8uWAd5e+QLzLeo3DNGXwFBR/dAQZPbPWSaP8F+ujNJvBwhpzFP5SiUVb5uve9o1T1ubH/Xz3/cfV8y3a5Dg3PsReFXIVKo30SakgBwbIIc2sWUqT+B9e+ke631Yty0XVWvKtkUJs3+uxh7KH7K8IQhXygehtQtryqrfpiDuzFDWsdvJHCZMxel669k6ZI95kyeY67oI4vlUqaTPMH2NdKNfS588BgWgHxxq+AO+IcAB5SpvMMZSRWC44TH/FTFm0GM7NoYVPIsfPAx5lgRVsLTdOpWEGmWhV6CRS3aNdRfxCz0F1d31LHL5Rc4pNY57Ah62eVbBk1ct5Qt1kVLym/bkNSG9JXS4EHeGT09vBoL4Q4QzGyBGo0LmzIO/z2vjvtqB2hVwwlwyFDuP7QJ6WW5Rflkq0QVB216joxOEs6TjsTip9yfnMzCK5da517xrg2FkoTpDWkOIuyrQnG0frcoWz7wnGrT3qnEWO9qBfOouNOeNyj3ZDSCMIeQEJp5/z0qLPVPoYiNQ/u5iM/DggqMnHC+1rex5BG/tHGylgNezWJ6IyypHveCU870Xl4fNQ9DrtIK4zOGDufR0dH0cn8SRJMJLeXvlO8mMyWrbvavWQDKR4VyFgDHuL+Bt+PJX+gskDVyql3TJMVXcB2jjsnu0kut7jndmAM3kB2EQdlcrmbLWvktpeTs3avTvYu2b9tk4cqZJQDFlJ5pCT4Px67ZTOaTLfG2z37G5otDEaMS5Dh8y1dj/Fxwv/EV90I2/w1VQN0vEJGwyWibbmVc8sU+Q5Skaz8ifkLHbNUCKoNAAA=" ConnectionId="696797f3-1ce8-47d3-b054-19cbfbfccf86" DisplayName="Update Context Grounding Index" sap:VirtualizedContainerService.HintSize="382,259.5" sap2010:WorkflowViewState.IdRef="ConnectorActivity_1" UiPathActivityTypeId="71ec2e44-3895-3203-bcf3-7b0c6e0f1cfa">
+                <isactr:ConnectorActivity.FieldObjects>
+                  <isactr:FieldObject Name="folderKey" Type="FieldArgument">
+                    <isactr:FieldObject.Value>
+                      <InArgument x:TypeArguments="x:String">670dd606-b041-46a2-aa0e-6eecaa19731e</InArgument>
+                    </isactr:FieldObject.Value>
+                  </isactr:FieldObject>
+                  <isactr:FieldObject Name="indexId" Type="FieldArgument">
+                    <isactr:FieldObject.Value>
+                      <InArgument x:TypeArguments="x:String">08adc291-7109-4324-20dd-08dd9f03305f</InArgument>
+                    </isactr:FieldObject.Value>
+                  </isactr:FieldObject>
+                </isactr:ConnectorActivity.FieldObjects>
+              </isactr:ConnectorActivity>
+            </Sequence>
+          </ActivityAction>
+        </ui:ForEach.Body>
+      </ui:ForEach>
+    </Sequence>
+    <uga:GetEmailListConnections ConnectionAccountName="{x:Null}" ContinueOnError="{x:Null}" CurrentIndex="{x:Null}" Filter="{x:Null}" FolderIdBackup="{x:Reference __ReferenceID1}" ManualEntryFolder="{x:Null}" AllLabels="W3siSWQiOiJDSEFUIiwiTmFtZSI6IkNIQVQiLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IlNFTlQiLCJOYW1lIjoiU0VOVCIsIlR5cGUiOiJzeXN0ZW0ifSx7IklkIjoiSU5CT1giLCJOYW1lIjoiSU5CT1giLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IklNUE9SVEFOVCIsIk5hbWUiOiJJTVBPUlRBTlQiLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IlRSQVNIIiwiTmFtZSI6IlRSQVNIIiwiVHlwZSI6InN5c3RlbSJ9LHsiSWQiOiJEUkFGVCIsIk5hbWUiOiJEUkFGVCIsIlR5cGUiOiJzeXN0ZW0ifSx7IklkIjoiU1BBTSIsIk5hbWUiOiJTUEFNIiwiVHlwZSI6InN5c3RlbSJ9LHsiSWQiOiJDQVRFR09SWV9GT1JVTVMiLCJOYW1lIjoiQ0FURUdPUllfRk9SVU1TIiwiVHlwZSI6InN5c3RlbSJ9LHsiSWQiOiJDQVRFR09SWV9VUERBVEVTIiwiTmFtZSI6IkNBVEVHT1JZX1VQREFURVMiLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IkNBVEVHT1JZX1BFUlNPTkFMIiwiTmFtZSI6IkNBVEVHT1JZX1BFUlNPTkFMIiwiVHlwZSI6InN5c3RlbSJ9LHsiSWQiOiJDQVRFR09SWV9QUk9NT1RJT05TIiwiTmFtZSI6IkNBVEVHT1JZX1BST01PVElPTlMiLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IkNBVEVHT1JZX1NPQ0lBTCIsIk5hbWUiOiJDQVRFR09SWV9TT0NJQUwiLCJUeXBlIjoic3lzdGVtIn0seyJJZCI6IlNUQVJSRUQiLCJOYW1lIjoiU1RBUlJFRCIsIlR5cGUiOiJzeXN0ZW0ifSx7IklkIjoiVU5SRUFEIiwiTmFtZSI6IlVOUkVBRCIsIlR5cGUiOiJzeXN0ZW0ifSx7IklkIjoiTGFiZWxfMjQxMjkwNjY1MTE0OTQ1MzY0MiIsIk5hbWUiOiJFcnJvcmVzIiwiVHlwZSI6InVzZXIifSx7IklkIjoiTGFiZWxfMjgxNjc1Nzg2NjEwMjUzODg5MSIsIk5hbWUiOiJQcm9jZXNhZG9zIiwiVHlwZSI6InVzZXIifSx7IklkIjoiTGFiZWxfNzExNTY4OTUzNDI1NDQ1NDkyOCIsIk5hbWUiOiJQcnVlYmFzIiwiVHlwZSI6InVzZXIifV0=" AuthScopesInvalid="False" BrowserFolder="Inbox" BrowserFolderLabelId="INBOX" ConnectionId="f2b7babf-04ad-47af-843a-bde824376427" DisplayName="Get unread emails from Gmail." EmailList="[EmailList]" FolderInputSelectionMode="Browse" sap:VirtualizedContainerService.HintSize="452,57" sap2010:WorkflowViewState.IdRef="GetEmailListConnections_1" ImportantOnly="False" IncludeSubfolders="False" MarkAsRead="False" MaxResults="100" StarredOnly="False" UnreadOnly="True" UseConnectionService="True" WithAttachmentsOnly="False">
+      <usaa:AutopilotCustomInit.CustomInit>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <InArgument x:TypeArguments="x:String" x:Key="BrowserFolder">Inbox</InArgument>
+        </scg:Dictionary>
+      </usaa:AutopilotCustomInit.CustomInit>
+      <uga:GetEmailListConnections.Folder>
         <ugagm:FolderArgument ConnectionDescriptor="{x:Null}" ConnectionKey="{x:Null}" ManualEntryFolderName="{x:Null}" BrowserFolderId="INBOX" BrowserFolderName="Inbox" InputMode="Browse">
           <ugagm:FolderArgument.Backup>
-            <usau:BackupSlot x:TypeArguments="ugage:FolderInputMode" x:Name="__ReferenceID0" StoredValue="Browse">
+            <usau:BackupSlot x:TypeArguments="ugage:FolderInputMode" x:Name="__ReferenceID1" StoredValue="Browse">
               <usau:BackupSlot.BackupValues>
                 <scg:Dictionary x:TypeArguments="ugage:FolderInputMode, scg:List(x:Object)" />
               </usau:BackupSlot.BackupValues>
             </usau:BackupSlot>
           </ugagm:FolderArgument.Backup>
         </ugagm:FolderArgument>
-      </uga:ForEachEmailConnections.Folder>
-    </uga:ForEachEmailConnections>
+      </uga:GetEmailListConnections.Folder>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </uga:GetEmailListConnections>
+    <ui:ForEach x:TypeArguments="ugm:GmailMessage" CurrentIndex="{x:Null}" DisplayName="For each email in Gmail" sap:VirtualizedContainerService.HintSize="450,57" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[EmailList]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="ugm:GmailMessage">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="ugm:GmailMessage" Name="CurrentEmail" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="416,288.5" sap2010:WorkflowViewState.IdRef="Sequence_4">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <uga:DownloadAttachmentsConnections ConnectionAccountName="{x:Null}" ContinueOnError="{x:Null}" Filter="{x:Null}" FilterByFileNames="{x:Null}" Result="{x:Null}" AuthScopesInvalid="False" ConnectionId="f2b7babf-04ad-47af-843a-bde824376427" DisplayName="Download attachments from the email in Gmail." Email="[CurrentEmail]" ExcludeInlineAttachments="False" sap:VirtualizedContainerService.HintSize="382,228.5" sap2010:WorkflowViewState.IdRef="DownloadAttachmentsConnections_1" NewResult="[DownloadedAttachments]" SearchMode="UseSimple" UseConnectionService="True" />
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEach.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:ForEach>
+    <ui:ForEach x:TypeArguments="uggm:GmailAttachmentLocalItem" CurrentIndex="{x:Null}" DisplayName="For each attachment in the email from Gmail" sap:VirtualizedContainerService.HintSize="450,48" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[DownloadedAttachments]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="uggm:GmailAttachmentLocalItem">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="uggm:GmailAttachmentLocalItem" Name="CurrentAttachment" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="416,326" sap2010:WorkflowViewState.IdRef="Sequence_7">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ucas:UploadStorageFile Path="{x:Null}" Destination="[CurrentAttachment.Name]" DisplayName="Upload the attachment to the storage bucket called docMD" FileResource="[CurrentAttachment]" sap:VirtualizedContainerService.HintSize="382,266" sap2010:WorkflowViewState.IdRef="UploadStorageFile_1" StorageBucketName="docMD" TimeoutMS="60000" />
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEach.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:ForEach>
   </Sequence>
 </Activity>
